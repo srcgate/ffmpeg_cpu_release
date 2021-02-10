@@ -70,6 +70,16 @@ Clone() {
     git pull
 }
 
+CloneNoDepth() {
+    local DIR="$(basename "$1" .git)"
+
+    cd "$WORK_DIR/"
+    test -d "$DIR/.git" || git clone "$@"
+
+    cd "$DIR"
+    git pull
+}
+
 # sudo apt install software-properties-common
 # sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 
@@ -229,7 +239,7 @@ compileLibX265() {
 	echo "####  X265  ################################################"
 	echo "Compiling libx265"
     cd "$WORK_DIR/"
-    Clone https://bitbucket.org/multicoreware/x265_git.git
+    CloneNoDepth https://bitbucket.org/multicoreware/x265_git.git
 	cd "$WORK_DIR/x265_git"*
 	cd "build/linux"
 	PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$CMP_PREFIX" -DENABLE_SHARED:bool=off ../../source
