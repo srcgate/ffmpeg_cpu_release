@@ -83,32 +83,40 @@ CloneNoDepth() {
 # sudo apt install software-properties-common
 # sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 
-PKGS="autoconf automake libtool patch make bzip2 unzip wget git mercurial git-all cmake cmake-curses-gui build-essential yasm"
-PKGS11="install autoconf automake build-essential libass-dev libtool pkg-config texinfo zlib1g-dev libva-dev cmake mercurial libdrm-dev libvorbis-dev libogg-dev git libx11-dev libperl-dev libpciaccess-dev libpciaccess0 xorg-dev intel-gpu-tools build-dep autoconf automake build-essential libass-dev libtool pkg-config texinfo zlib1g-dev cmake mercurial libdrm mesa xserver-xorg-video-ati xorg-server git llvm-3.4-dev libelf-dev linux-headers-`uname -r` build-essential llvm llvm-dev libelf-dev libdrm-dev sudo apt-get install ccache flex bison cmake g++ git patch zlib1g-dev autoconf xutils-dev libtool pkg-config libpciaccess-dev libz-dev clinfo freeglut3* opencl-headers libwayland-dev xutils-dev ocl-icd-* libssl-dev"
-PKGS10="cmake cmake3 cmake-curses-gui zlib1g-dev liblilv-dev yasm libass-dev libogg-dev libopencore-amrnb-dev libopencore-amrwb-dev pkg-config libgcc1 libopus-dev lib32gcc1 libx32gcc1 libmp3lame-dev build-essential autoconf automake libtool libgccs-dev gcc-multilib g++-multilib gcc-7 g++-7 gcc-8 g++-8 gcc-9 g++-9 g++"
-PKGS9="libfreetype6-dev libdrm-dev p11-kit libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev texinfo"
-PKGS8="wget libchromaprint-dev frei0r-plugins-dev gnutls-dev ladspa-sdk libcaca-dev libcdio-paranoia-dev libcodec2-dev libfontconfig1-dev libfreetype6-dev"
-PKGS7="libfribidi-dev libgme-dev libgsm1-dev libjack-dev libmodplug-dev libopenjp2-7-dev libopenmpt-dev"
+PKGS="bzip2 python-bzutils cmake3 libgccs-dev gcc-9 build-dep libfreetype6-devp11-kit mesa xorg-server llvm-3.4-dev"
+PKGS13="llvm llvm-dev libelf-dev ccache flex bison g++ zlib1g-dev autoconf xutils-dev libz-dev clinfo freeglut3*"
+PKGS12="libass-dev zlib1g-dev xserver-xorg-video-ati libelf-dev linux-headers-`uname -r`"
+PKGS11="libass-dev texinfo zlib1g-dev libva-dev libdrm-dev libvorbis-dev libogg-dev"
+PKGS10="zlib1g-dev liblilv-dev yasm libass-dev libogg-dev libopencore-amrnb-dev libopencore-amrwb-dev pkg-config libgcc1 libopus-dev lib32gcc1 libx32gcc1 libmp3lame-dev gcc-multilib g++-multilib gcc-7 g++-7 gcc-8 g++-8 g++-9 g++"
+PKGS9="libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev"
+PKGS8="libchromaprint-dev frei0r-plugins-dev gnutls-dev ladspa-sdk libcaca-dev libcdio-paranoia-dev libcodec2-dev libfontconfig1-dev libfreetype6-dev"
+PKGS7="libfribidi-dev libgme-dev libgsm1-dev libmodplug-dev libopenjp2-7-dev libopenmpt-dev"
 PKGS6="libpulse-dev librsvg2-dev librubberband-dev librtmp-dev libshine-dev libsmbclient-dev libsnappy-dev libsoxr-dev libspeex-dev libssh-dev"
 PKGS5="libtesseract-dev libtheora-dev libtwolame-dev libv4l-dev libvo-amrwbenc-dev libwavpack-dev libwebp-dev"
-PKGS4="libxml2-dev libzmq3-dev libzvbi-dev libopenal-dev opencl-dev libjack-dev git libx11-dev libperl-dev"
-PKGS3="libpciaccess-dev libpciaccess0 xorg-dev intel-gpu-tools opencl-headers libwayland-dev xutils-dev ocl-icd-* libssl-dev libbz2-1.0 libbz2-dev libbz2-ocaml"
-PKGS2="apt-clone libbz2-ocaml-dev python-dev python-bzutils libbz2-dev libbz2-1.0 libbz2-dev libbz2-ocaml libbz2-ocaml-dev"
-PKGS1="unzip build-essential autoconf automake libtool git checkinstall autoconf automake libtool shtool patch make bzip2 unzip wget git mercurial tclsh git-all xz-utils libnuma-dev git-all cmake cmake-curses-gui build-essential yasm"
+PKGS4="libxml2-dev libzmq3-dev libzvbi-dev libopenal-dev opencl-dev libjack-dev libx11-dev libperl-dev"
+PKGS3="libpciaccess-dev libpciaccess0 xorg-dev intel-gpu-tools opencl-headers libwayland-dev xutils-dev ocl-icd-* libssl-dev libbz2-1.0 libbz2-dev"
+PKGS2="apt-clone libbz2-ocaml-dev python-dev libbz2-dev libbz2-1.0 libbz2-dev"
+PKGS1="unzip build-essential autoconf automake libtool git checkinstall shtool patch make bzip2 mercurial tclsh git-all xz-utils libnuma-dev cmake cmake-curses-gui"
+
+installPreAptLibs() {
+	echo "####  APT - LIBS  ################################################"
+    sudo apt-get update
+	sudo add-apt-repository ppa:oibaf/graphics-drivers
+}
+
 
 installAptLibs() {
 	echo "####  APT - LIBS  ################################################"
     sudo apt-get update
-	sudo add-apt-repository ppa:oibaf/graphics-drivers
-	for i in $PKGS; do
+	for i in $PKGS1 $PKGS2 $PKGS3 $PKGS4 $PKGS5 $PKGS6 $PKGS7 $PKGS8 $PKGS9 $PKGS10; do
 	  sudo apt-get -y install $i
 	done
-	for i in $PKGS1 $PKGS2 $PKGS3 $PKGS4 $PKGS5 $PKGS6 $PKGS7 $PKGS8 $PKGS9 $PKGS10 $PKGS11; do
-	  sudo apt-get -y --force-yes install $i
+	for i in $PKGS11 $PKGS12 $PKGS13; do
+	  sudo apt-get -y install $i
 	done
-    sudo apt-get -y --force-yes install \
+    sudo apt-get -y install \
       build-essential texi2html software-properties-common \
-      libfreetype6-dev libgpac-dev libtheora-dev libva-dev \
+      libfreetype6-dev libgpac-dev libva-dev \
       libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev
 	  # pkg-config libvorbis-dev zlib1g-dev libsdl1.2-dev
 }
@@ -470,378 +478,8 @@ compileFfmpeg(){
     hash -r
 }
 
-compileFFmpegX(){
-	echo "####  FFMPEG3  ################################################"
-    echo "Compiling ffmpeg"
-	cd "$WORK_DIR/"
-    rm -rf "FFmpeg/"
-    Clone https://github.com/FFmpeg/FFmpeg -b master
-    export PATH="$HOME/bin:$PATH"
-	export PKG_CONFIG="/usr/bin/pkgconf"
-	export PKG_CONFIG_PATH="$DEST_DIR/lib/pkgconfig:$DEST_DIR/lib64/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib64/pkgconfig"
-    ./configure \
---prefix=/root/FFmpeg/target
- --extra-cflags=-I/root/FFmpeg/target/include
- --extra-ldflags='-L/root/FFmpeg/target/lib -Wl,-Bstatic -lcrypto -lssl -Wl,-Bdynamic'
- --extra-version=XUI10FFMPEG 
- --disable-debug
- --disable-shared
- --enable-libx265
- --enable-static
- --extra-cflags=--static
- --disable-ffplay
- --disable-doc
- --enable-gpl
- --enable-pthreads
- --enable-postproc
- --enable-libass
- --enable-gray
- --enable-runtime-cpudetect
- --enable-libfreetype
- --enable-libmp3lame
- --enable-libopus
- --enable-libtheora
- --enable-libvorbis
- --enable-gnutls
- --enable-libx264
- --enable-libxvid
- --enable-bzlib
- --enable-fontconfig
- --enable-zlib
- --enable-version3
- --enable-libvpx
- --enable-libxavs
- --enable-nvenc
- --enable-ffnvcodec
- --enable-cuvid
- --disable-autodetect
- --disable-alsa
- --disable-indev=alsa
- --disable-outdev=alsa
- --enable-librtmp
- --extra-libs='-lsupc++ -lgmp -lz -lunistring -lpthread -lm -lrt -ldl'
- 
---prefix=/usr
- --enable-gpl
- --enable-nonfree
- --enable-version3
- --enable-muxer=rtsp
- --enable-protocol=rtp
- --enable-demuxer=rtsp
- --enable-bzlib
- --enable-frei0r
- --enable-ladspa
- --enable-openal
- --enable-libass
- --enable-libdc1394
- --enable-libfreetype
- --enable-libfontconfig
- --enable-libfribidi
- --enable-libgsm
- --enable-libmp3lame
- --enable-libpulse
- --enable-libsoxr
- --enable-libspeex
- --enable-libtheora
- --enable-libvorbis
- --enable-libvpx
- --enable-libx264
- --enable-libx265
- --enable-libxvid
- --enable-libfdk_aac
- --enable-libxml2
- --enable-libcv2
- --enable-static
- --enable-runtime-cpudetect
- --enable-openssl
- --disable-vdpau
- --disable-doc
- --disable-shared
- --extra-cflags=-fopenmp
- --extra-ldflags=-fopenmp
- --disable-libmfx
- --enable-cuda
- --enable-cuvid
- --enable-nvdec
- --enable-nvenc
- --enable-libnpp
- --enable-cuda-sdk
- --extra-cflags=-I/usr/local/cuda/include
- --extra-ldflags=-L/usr/local/cuda/lib64
- --extra-cflags=-DCONFIG_LCNS_AUTH
- --extra-ldflags=-L/root/xaccel-codec/lcns
- --extra-libs='-llcns -lssl -lcrypto -lz -ljansson'
-}
 
-compileFFmpeg2(){
-	echo "####  FFMPEG2  ################################################"
-    echo "Compiling ffmpeg"
-	cd "$WORK_DIR/"
-    rm -rf "FFmpeg/"
-    Clone https://github.com/FFmpeg/FFmpeg -b master
-    export PATH="$HOME/bin:$PATH"
-	export PKG_CONFIG="/usr/bin/pkgconf"
-	export PKG_CONFIG_PATH="$DEST_DIR/lib/pkgconfig:$DEST_DIR/lib64/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib64/pkgconfig"
-    ./configure \
-		--pkg-config-flags="--static" \
-		--enable-static --disable-shared \
-		--bindir="$CMP_PREFIX" \
-		--bindir="$HOMEBIN_DIR" \
-		--extra-cflags="-I $DEST_DIR/include -I /usr/include" \
-		--extra-ldflags="-L $DEST_DIR/lib -L /usr/lib" \
-		--extra-ldexeflags=-static \
-		--enable-runtime-cpudetect \
-		--extra-libs=-lpthread \
-		--extra-libs="-lpthread -lm -lz -ldl" \
-		--enable-ladspa \
-		--enable-libaom \
-		--enable-libass \
-		--enable-libcaca \
-		--enable-libcdio \
-		--enable-libcodec2 \
-		--enable-libdrm \
-		--enable-libfontconfig \
-		--enable-libfreetype \
-		--enable-libfribidi \
-		--enable-libfdk-aac \
-		--enable-libgme \
-		--enable-libgsm \
-		--enable-libjack \
-		--enable-libmodplug \
-		--enable-libmp3lame \
-		--enable-libnpp \
-		--enable-libopencore-amrnb \
-		--enable-libopencore-amrwb \
-		--enable-libopencore-amrwb \
-		--enable-libopenjpeg \
-		--enable-libopenmpt \
-		--enable-libopus \
-		--enable-libpulse \
-		--enable-librubberband \
-		--enable-libshine \
-		--enable-libsnappy \
-		--enable-libsoxr \
-		--enable-libspeex \
-		--enable-libssh \
-		--enable-libsrt \
-		--enable-libtheora \
-		--enable-libtwolame \
-		--enable-libvo-amrwbenc \
-		--enable-libvorbis \
-		--enable-libvpx \
-		--enable-libwebp \
-		--enable-libxvid \
-		--enable-libzvbi \
-		--enable-libx264 \
-		--enable-libx265 \
-		--enable-libxcb \
-		--enable-lv2 \
-		--enable-gpl \
-		--enable-openal \
-		--enable-opengl \
-		--enable-openssl \
-		--enable-nonfree \
-		--enable-version3 \
-		--enable-muxer=rtsp \
-		--enable-protocol=rtp \
-		--enable-demuxer=rtsp \
-		--enable-bzlib \
-		--enable-frei0r \
-		--enable-libmp3lame \
-		--enable-libtheora \
-		--enable-opencl \
-		--enable-pic \
-		--enable-nonfree \
-		--enable-small  \
-		--enable-chromaprint \
-		--enable-frei0r \
-		--enable-gmp \
-		--disable-debug \
-		--enable-static
-	PATH="$HOME/bin:$PATH"
-	make -j$(nproc) 
-	make -j$(nproc) install 
-	make -j$(nproc) distclean
-    hash -r
-}
-
-compileFFmpeg3(){
-	echo "####  FFMPEG3  ################################################"
-    echo "Compiling ffmpeg"
-	cd "$WORK_DIR/"
-    rm -rf "FFmpeg/"
-    Clone https://github.com/FFmpeg/FFmpeg -b master
-    export PATH="$HOME/bin:$PATH" 
-	export PKG_CONFIG_PATH="$DEST_DIR/lib/pkgconfig"
-	PKG_CONFIG_PATH="$DEST_DIR/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig" \
-    ./configure \
-		--cc=gcc \
-		--pkg-config-flags="--static" \
-		--pkgconfigdir="$DEST_DIR/lib/pkgconfig" \
-		--enable-static --disable-shared \
-	    --bindir="$CMP_PREFIX" \
-        --bindir="$HOMEBIN_DIR" \
-		--extra-cflags="-I $DEST_DIR/include" \
-		--extra-ldflags="-L $DEST_DIR/lib" \
-        --extra-cflags="-I /usr/include" \
-        --extra-ldflags="-L /usr/lib" \
-	    --extra-cflags="-I/usr/local/include" \
-        --extra-ldflags="-L/usr/local/lib" \
-        --extra-ldexeflags=-static \
-		--enable-runtime-cpudetect \
-		--extra-libs=-lpthread \
-		--extra-libs="-lpthread -lm -lz -ldl -lstdc++ -lgcc_s -lgcc -lgcc_s -lgcc -lrt -lnuma" \
-        --enable-ladspa \
-        --enable-libaom \
-        --enable-libcdio \
-        --enable-libfontconfig \
-        --enable-libfreetype \
-        --enable-libfdk-aac \
-        --enable-libgsm \
-        --enable-libjack \
-        --enable-libmp3lame \
-        --enable-libopencore-amrnb \
-        --enable-libopencore-amrwb \
-        --enable-libopencore-amrwb \
-        --enable-libopus \
-        --enable-libsnappy \
-        --enable-libspeex \
-        --enable-libtheora \
-        --enable-libtwolame \
-        --enable-libvo-amrwbenc \
-        --enable-libvorbis \
-        --enable-libvpx \
-        --enable-libwebp \
-        --enable-libxvid \
-        --enable-libzvbi \
-        --enable-libx264 \
-		--enable-libx265 \
-        --enable-libxcb \
-        --enable-gpl \
-        --enable-openssl \
-        --enable-nonfree \
-        --enable-version3 \
-        --enable-muxer=rtsp \
-        --enable-protocol=rtp \
-        --enable-demuxer=rtsp \
-        --enable-bzlib \
-        --enable-frei0r \
-        --enable-pic \
-        --enable-nonfree \
-        --enable-small  \
-        --enable-frei0r \
-        --enable-gmp \
-        --disable-debug \
-        --enable-static
-		PATH="$HOME/bin:$PATH" make -j$(nproc) 
-		make -j$(nproc) install 
-		make -j$(nproc) distclean 
-		hash -r
-}
-
-compileFFmpeg4(){
-	echo "####  FFMPEG3  ################################################"
-    echo "Compiling ffmpeg"
-	cd "$WORK_DIR/"
-    rm -rf "FFmpeg/"
-    cp -r "FFmpeg2/" "FFmpeg/"
-	cd "$WORK_DIR/FFmpeg"
-	export PATH="$HOME/bin:/usr/lib/x86_64-linux-gnu:$PATH"
-    export PKG_CONFIG_PATH="$DEST_DIR/lib/pkgconfig:$DEST_DIR/lib64/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
-    PATH="$HOME/bin:/usr/lib/x86_64-linux-gnu:$PATH" \
-	PKG_CONFIG_PATH="$DEST_DIR/lib/pkgconfig:$DEST_DIR/lib64/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH" \
-    ./configure \
-		--cc=gcc \
-		--pkg-config-flags="--static" \
-		--pkgconfigdir="$PKG_CONFIG_PATH" \
-		--pkgconfigdir="$DEST_DIR/lib/pkgconfig" \
-		--pkgconfigdir="/usr/lib/x86_64-linux-gnu/pkgconfig" \
-		--enable-static \
-		--disable-shared \
-	    --bindir="$CMP_PREFIX" \
-        --bindir="$BIN_DIR" \
-		--extra-cflags="-I$DEST_DIR/include" \
-		--extra-ldflags="-L$DEST_DIR/lib" \
-        --extra-cflags="-I/usr/include" \
-        --extra-ldflags="-L/usr/lib" \
-	    --extra-cflags="-I/usr/local/include" \
-        --extra-ldflags="-L/usr/local/lib" \
-        --extra-ldexeflags=-static \
-		--enable-runtime-cpudetect \
-		--extra-libs=-lpthread \
-		--extra-libs="-lpthread -lm -lz -ldl -lass" \
-		--enable-ladspa \
-		--enable-libaom \
-		--enable-libass \
-		--enable-libcaca \
-		--enable-libcdio \
-		--enable-libcodec2 \
-		--enable-libdrm \
-		--enable-libfontconfig \
-		--enable-libfreetype \
-		--enable-libfribidi \
-		--enable-libfdk-aac \
-		--enable-libgme \
-		--enable-libgsm \
-		--enable-libjack \
-		--enable-libmodplug \
-		--enable-libmp3lame \
-		--enable-libopencore-amrnb \
-		--enable-libopencore-amrwb \
-		--enable-libopencore-amrwb \
-		--enable-libopenjpeg \
-		--enable-libopenmpt \
-		--enable-libopus \
-		--enable-libpulse \
-		--enable-librubberband \
-		--enable-libshine \
-		--enable-libsnappy \
-		--enable-libsoxr \
-		--enable-libspeex \
-		--enable-libssh \
-		--enable-libsrt \
-		--enable-libtheora \
-		--enable-libtwolame \
-		--enable-libvo-amrwbenc \
-		--enable-libvorbis \
-		--enable-libvpx \
-		--enable-libwebp \
-		--enable-libxvid \
-		--enable-libzvbi \
-		--enable-libx264 \
-		--enable-libx265 \
-		--enable-libxcb \
-		--enable-lv2 \
-		--enable-gpl \
-		--enable-openal \
-		--enable-opengl \
-		--enable-openssl \
-		--enable-nonfree \
-		--enable-version3 \
-		--enable-muxer=rtsp \
-		--enable-protocol=rtp \
-		--enable-demuxer=rtsp \
-		--enable-bzlib \
-		--enable-frei0r \
-		--enable-libmp3lame \
-		--enable-libtheora \
-		--enable-opencl \
-		--enable-pic \
-		--enable-nonfree \
-		--enable-small  \
-		--enable-frei0r \
-		--enable-gmp \
-		--disable-debug \
-		--enable-static
-		PATH="$HOME/bin:/usr/lib/x86_64-linux-gnu:$PATH" \
-		make -j$(nproc) 
-		make -j$(nproc) install 
-		make -j$(nproc) distclean 
-		hash -r
-}
-
-
-compileFFmpeg5(){
+compileFFmpeg_CPU(){
 	echo "####  FFMPEG3  ################################################"
     echo "Compiling ffmpeg"
 	cd "$WORK_DIR/"
@@ -856,6 +494,9 @@ compileFFmpeg5(){
 	  --bindir="$HOME/bin" \
 	  --extra-cflags="-I$HOME/ffmpeg_build/include" \
 	  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+	  --extra-cflags="-I/opt/intel/mediasdk/include" \
+      --extra-ldflags="-L/opt/intel/mediasdk/lib" \
+      --extra-ldflags="-L/opt/intel/mediasdk/plugins" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
 	  --enable-opencl \
 	  --disable-debug \
@@ -895,7 +536,6 @@ compileFFmpeg5(){
 	  --enable-libmp3lame \
 	  --enable-libopencore-amrnb \
 	  --enable-libopencore-amrwb \
-	  --enable-libopencore-amrwb \
 	  --enable-libopenjpeg \
 	  --enable-libopenmpt \
 	  --enable-libopus \
@@ -908,6 +548,7 @@ compileFFmpeg5(){
 	  --enable-libtheora \
 	  --enable-libtwolame \
 	  --enable-libvo-amrwbenc \
+	  --enable-libwavpack \
 	  --enable-libwebp \
 	  --enable-libxvid \
 	  --enable-libzvbi \
@@ -930,30 +571,124 @@ compileFFmpeg5(){
 }
 
 
+compileFFmpeg_Qsync(){
+	echo "####  FFMPEG3  ################################################"
+    echo "Compiling ffmpeg"
+	cd "$WORK_DIR/"
+    rm -rf "FFmpeg/"
+    cp -r "FFmpeg2/" "FFmpeg/"
+	cd "$WORK_DIR/FFmpeg"
+	export PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig:$PKG_CONFIG_PATH"
+	PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
+	  --pkg-config-flags="--static" \
+	  --enable-static --disable-shared \
+	  --prefix="$HOME/ffmpeg_build" \
+	  --bindir="$HOME/bin" \
+	  --extra-cflags="-I$HOME/ffmpeg_build/include" \
+	  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+	  --extra-cflags="-I/opt/intel/mediasdk/include" \
+      --extra-ldflags="-L/opt/intel/mediasdk/lib" \
+      --extra-ldflags="-L/opt/intel/mediasdk/plugins" \
+	  --extra-libs="-lpthread -lm -lz -ldl" \
+	  --enable-libmfx \
+	  --enable-vaapi \	 
+	  --enable-opencl \
+	  --disable-debug \
+	  --enable-libvorbis \
+	  --enable-libvpx \
+	  --enable-libdrm \
+	  --enable-gpl \
+	  --enable-runtime-cpudetect \
+	  --enable-libfdk-aac \
+	  --enable-libx264 \
+	  --enable-libx265 \
+	  --enable-openssl \
+	  --enable-pic \
+	  --extra-libs="-lpthread -lm -lz -ldl" \
+	  --enable-nonfree \
+	  --enable-libass \
+	  --extra-libs=-lpthread \
+	  --enable-libxcb \
+	  --enable-libpulse \
+	  --enable-nonfree \
+	  --enable-small  \
+	  --enable-chromaprint \
+	  --enable-frei0r \
+	  --enable-gmp \
+	  --enable-ladspa \
+	  --enable-libaom \
+	  --enable-libcaca \
+	  --enable-libcdio \
+	  --enable-libcodec2 \
+	  --enable-libfontconfig \
+	  --enable-libfreetype \
+	  --enable-libfribidi \
+	  --enable-libgme \
+	  --enable-libgsm \
+	  --enable-libjack \
+	  --enable-libmodplug \
+	  --enable-libmp3lame \
+	  --enable-libopencore-amrnb \
+	  --enable-libopencore-amrwb \
+	  --enable-libopenjpeg \
+	  --enable-libopenmpt \
+	  --enable-libopus \
+	  --enable-librubberband \
+	  --enable-libshine \
+	  --enable-libsnappy \
+	  --enable-libsoxr \
+	  --enable-libspeex \
+	  --enable-libssh \
+	  --enable-libtheora \
+	  --enable-libtwolame \
+	  --enable-libvo-amrwbenc \
+	  --enable-libwavpack \
+	  --enable-libwebp \
+	  --enable-libxvid \
+	  --enable-libzvbi \
+	  --enable-lv2 \
+	  --enable-openal \
+	  --enable-opengl \
+	  --enable-version3 \
+	  --enable-muxer=rtsp \
+	  --enable-protocol=rtp \
+	  --enable-demuxer=rtsp \
+	  --enable-bzlib \
+	  --enable-frei0r \
+	  --enable-libmp3lame \
+	  --enable-libtheora \
+	  --enable-static
+	PATH="$HOME/bin:$PATH" make -j$(nproc) 
+	make -j$(nproc) install 
+	make -j$(nproc) distclean 
+	hash -r
+}
 
-#installLibs
+
+installPreAptLibs
+installLibs
 #installCUDASDK
 #installNvidiaSDK
 
-#compileNasm
-#compileYasm
-compileLilv
-#compilePkgConfig
-#compileLibX264
-#compileLibX265
-#compileLibfdkaac
-#compileLibVpx
-#compileLibVorbis
-#compileLibsdl2
-#compileLibAom
-#compileLibXvid
-#compileLibMp3Lame
-#compileLibOpenCore
-#compileLibOpus
-#compileLibTwoLame
-#compileLibVoAmrwbenc
-#compileWebp
-#compileFFmpegPre
+compileNasm
+compileYasm
+##compileLilv
+##compilePkgConfig
+compileLibX264
+compileLibX265
+compileLibfdkaac
+compileLibVpx
+compileLibVorbis
+compileLibsdl2
+compileLibAom
+compileLibXvid
+compileLibMp3Lame
+compileLibOpenCore
+compileLibOpus
+compileLibTwoLame
+compileLibVoAmrwbenc
+compileWebp
+compileFFmpegPre
 compileFFmpeg5
 
 #echo "Complete!"
@@ -961,4 +696,3 @@ compileFFmpeg5
 #echo "apt-get install -y libjack-dev libopenal-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev libcdio-paranoia-dev libcaca-dev libxv1 liblilv-dev librubberband-dev libass-dev libva-dev libgme-dev libmodplug-dev libopenmpt-dev  libchromaprint-dev libssh-dev libopencore-amrnb-dev libopencore-amrwb-dev libcodec2-dev libvo-amrwbenc-dev"
 #echo "sudo apt install ocl-icd-opencl-dev"
 ## END ##
-
