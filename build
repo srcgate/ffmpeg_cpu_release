@@ -431,6 +431,34 @@ compileWebp() {
 	make -j$(nproc) clean VERBOSE=1
 }
 
+compileLibOGG() {
+	echo "####  LIBOGG  ################################################"
+	echo "####  --enable-libogg ####"
+    echo "Compiling webo"
+	cd "$WORK_DIR/"
+    Wget https://ftp.osuosl.org/pub/xiph/releases/ogg/libogg-1.3.3.tar.gz
+	tar xzvf "libogg-1.3.3.tar.gz"
+	cd libogg*
+	PATH="$HOME/bin:$PATH" ./configure --prefix="$CMP_PREFIX" --disable-shared --enable-static --enable-shared=no
+    make -j$(nproc) VERBOSE=1
+	make -j$(nproc) install VERBOSE=1
+	make -j$(nproc) clean VERBOSE=1
+}
+
+compileLibTheora() {
+	echo "####  LIBOGG  ################################################"
+	echo "####  --enable-libogg ####"
+    echo "Compiling webo"
+	cd "$WORK_DIR/"
+    Wget https://ftp.osuosl.org/pub/xiph/releases/theora/libtheora-1.1.1.tar.gz
+	tar xzvf "libtheora-1.1.1.tar.gz"
+	cd libtheora*
+	PATH="$HOME/bin:$PATH" ./configure --prefix="$CMP_PREFIX" --with-ogg-libraries="$CMP_PREFIX"/lib --with-ogg-includes="$CMP_PREFIX"/include/ --with-vorbis-libraries="$CMP_PREFIX"/lib --with-vorbis-includes="$CMP_PREFIX"/include/ --enable-static --disable-shared --disable-oggtest --disable-vorbistest --disable-examples --disable-asm --disable-spec
+    make -j$(nproc) VERBOSE=1
+	make -j$(nproc) install VERBOSE=1
+	make -j$(nproc) clean VERBOSE=1
+}
+
 compileFFmpegPre(){
 	echo "####  FFMPEG PRE  ################################################"
     echo "Compiling ffmpeg"
@@ -441,7 +469,7 @@ compileFFmpegPre(){
 	mv "FFmpeg/" "FFmpeg2/"
 }
 
-compileFfmpeg(){
+compileFFmpeg_DEBUG(){
 	echo "####  FFMPEG  ################################################"
     echo "Compiling ffmpeg"
     Clone https://github.com/FFmpeg/FFmpeg -b master
@@ -481,10 +509,10 @@ compileFfmpeg(){
 
 compileFFmpeg_CPU(){
 	echo "####  FFMPEG_CPU  ################################################"
-    echo "Compiling ffmpeg"
+	echo "Compiling ffmpeg"
 	cd "$WORK_DIR/"
-    rm -rf "FFmpeg/"
-    cp -r "FFmpeg2/" "FFmpeg/"
+	rm -rf "FFmpeg/"
+	cp -r "FFmpeg2/" "FFmpeg/"
 	cd "$WORK_DIR/FFmpeg"
 	export PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig:$PKG_CONFIG_PATH"
 	PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
@@ -495,7 +523,7 @@ compileFFmpeg_CPU(){
 	  --extra-cflags="-I$HOME/ffmpeg_build/include" \
 	  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
-	  --enable-vaapi \	 
+	  --enable-vaapi \
 	  --enable-opencl \
 	  --disable-debug \
 	  --enable-libvorbis \
@@ -545,7 +573,6 @@ compileFFmpeg_CPU(){
 	  --enable-libtheora \
 	  --enable-libtwolame \
 	  --enable-libvo-amrwbenc \
-	  --enable-libwavpack \
 	  --enable-libwebp \
 	  --enable-libxvid \
 	  --enable-libzvbi \
@@ -556,8 +583,6 @@ compileFFmpeg_CPU(){
 	  --enable-muxer=rtsp \
 	  --enable-protocol=rtp \
 	  --enable-demuxer=rtsp \
-	  --enable-demuxer=dash \
-      --enable-libxml2 \
 	  --enable-bzlib \
 	  --enable-frei0r \
 	  --enable-libmp3lame \
@@ -568,7 +593,6 @@ compileFFmpeg_CPU(){
 	make -j$(nproc) distclean 
 	hash -r
 }
-
 
 compileFFmpeg_Qsync(){
 	echo "####  FFMPEG3  ################################################"
@@ -590,7 +614,7 @@ compileFFmpeg_Qsync(){
       --extra-ldflags="-L/opt/intel/mediasdk/plugins" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
 	  --enable-libmfx \
-	  --enable-vaapi \	 
+	  --enable-vaapi \
 	  --enable-opencl \
 	  --disable-debug \
 	  --enable-libvorbis \
@@ -640,7 +664,6 @@ compileFFmpeg_Qsync(){
 	  --enable-libtheora \
 	  --enable-libtwolame \
 	  --enable-libvo-amrwbenc \
-	  --enable-libwavpack \
 	  --enable-libwebp \
 	  --enable-libxvid \
 	  --enable-libzvbi \
@@ -651,8 +674,6 @@ compileFFmpeg_Qsync(){
 	  --enable-muxer=rtsp \
 	  --enable-protocol=rtp \
 	  --enable-demuxer=rtsp \
-	  --enable-demuxer=dash \
-      --enable-libxml2 \
 	  --enable-bzlib \
 	  --enable-frei0r \
 	  --enable-libmp3lame \
@@ -688,8 +709,10 @@ compileLibOpus
 compileLibTwoLame
 compileLibVoAmrwbenc
 compileWebp
+compileLibOGG
+compileLibTheora
 compileFFmpegPre
-compileFFmpeg5
+compileFFmpeg_CPU
 
 #echo "Complete!"
 
