@@ -120,7 +120,7 @@ installAptLibs() {
       libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev
 	  # pkg-config libvorbis-dev zlib1g-dev libsdl1.2-dev
 	#david
-	sudo apt-get install python3 python3-pip python3-setuptools python3-wheel ninja-build nasm yasm
+	sudo apt-get install -y python3 python3-pip python3-setuptools python3-wheel ninja-build nasm
 	pip3 install --user meson
 	
 }
@@ -272,15 +272,15 @@ compileLibsvtav1() {
 }
 
 compilelibdav1d() {
-	echo "#### libsvtav1  ################################################"
+	echo "#### libdav1d  ################################################"
 	echo "Compiling --enable-libdav1d"
     cd "$WORK_DIR/"
     Clone https://code.videolan.org/videolan/dav1d.git
 	mkdir build
 	cd "build"
 	/root/.local/bin/meson setup -Denable_tools=false -Denable_tests=false --default-library=static .. --prefix "$CMP_PREFIX" --bindir="$CMP_PREFIX/bin" --libdir="$CMP_PREFIX/lib" -Denable_avx512=false
-	/usr/local/bin/ninja
-	/usr/local/bin/ninja install
+	/usr/bin/ninja
+	/usr/bin/ninja install
 	#meson setup -Denable_tools=false -Denable_tests=false --default-library=static .. --prefix "$CMP_PREFIX" --bindir="$HOME/bin" --libdir="$CMP_PREFIX/lib"
 	#ninja
 	#ninja install
