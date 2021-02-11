@@ -84,7 +84,7 @@ CloneNoDepth() {
 # sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 
 PKGS="bzip2 python-bzutils cmake3 libgccs-dev gcc-9 build-dep libfreetype6-devp11-kit mesa xorg-server llvm-3.4-dev"
-PKGS13="llvm llvm-dev libelf-dev ccache flex bison g++ autoconf xutils-dev libz-dev clinfo libgnutls28-dev meson ninja-build freeglut3*"
+PKGS13="llvm llvm-dev libelf-dev ccache flex bison g++ autoconf xutils-dev libz-dev clinfo freeglut3*"
 PKGS12="xserver-xorg-video-ati libelf-dev linux-headers-`uname -r`"
 PKGS11="texinfo libva-dev libdrm-dev libvorbis-dev libogg-dev"
 PKGS10="zlib1g-dev liblilv-dev yasm libass-dev libogg-dev libopencore-amrnb-dev libopencore-amrwb-dev pkg-config libgcc1 libopus-dev lib32gcc1 libx32gcc1 libmp3lame-dev gcc-multilib g++-multilib gcc-7 g++-7 gcc-8 g++-8 g++-9 g++"
@@ -119,6 +119,10 @@ installAptLibs() {
       libfreetype6-dev libgpac-dev libva-dev \
       libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev
 	  # pkg-config libvorbis-dev zlib1g-dev libsdl1.2-dev
+	#david
+	sudo apt-get install python3 python3-pip python3-setuptools python3-wheel ninja-build nasm yasm
+	pip3 install --user meson
+	
 }
 
 installYumLibs() {
@@ -271,13 +275,15 @@ compilelibdav1d() {
 	echo "#### libsvtav1  ################################################"
 	echo "Compiling --enable-libdav1d"
     cd "$WORK_DIR/"
-	sudo apt-get install python3-pip && pip3 install --user meson
     Clone https://code.videolan.org/videolan/dav1d.git
 	mkdir build
 	cd "build"
-	meson setup -Denable_tools=false -Denable_tests=false --default-library=static .. --prefix "$CMP_PREFIX" --bindir="$HOMEBIN_DIR" --libdir="$CMP_PREFIX/lib"
-	ninja
-	ninja install
+	/root/.local/bin/meson setup -Denable_tools=false -Denable_tests=false --default-library=static .. --prefix "$CMP_PREFIX" --bindir="$CMP_PREFIX/bin" --libdir="$CMP_PREFIX/lib" -Denable_avx512=false
+	/usr/local/bin/ninja
+	/usr/local/bin/ninja install
+	#meson setup -Denable_tools=false -Denable_tests=false --default-library=static .. --prefix "$CMP_PREFIX" --bindir="$HOME/bin" --libdir="$CMP_PREFIX/lib"
+	#ninja
+	#ninja install
 }
 
 compileLibfdkaac() {
@@ -548,7 +554,6 @@ compileFFmpeg_CPU(){
 	  --extra-cflags="-I$HOME/ffmpeg_build/include" \
 	  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
-	  --enable-gnutls \
 	  --enable-libsvtav1 \
 	  --enable-libdav1d \
 	  --enable-vaapi \
@@ -642,7 +647,6 @@ compileFFmpeg_Qsync(){
       --extra-ldflags="-L/opt/intel/mediasdk/plugins" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
 	  --enable-libmfx \
-	  --enable-gnutls \
 	  --enable-libsvtav1 \
 	  --enable-libdav1d \
 	  --enable-vaapi \
