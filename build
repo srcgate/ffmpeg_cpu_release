@@ -84,9 +84,9 @@ CloneNoDepth() {
 # sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 
 PKGS="bzip2 python-bzutils cmake3 libgccs-dev gcc-9 build-dep libfreetype6-devp11-kit mesa xorg-server llvm-3.4-dev"
-PKGS13="llvm llvm-dev libelf-dev ccache flex bison g++ zlib1g-dev autoconf xutils-dev libz-dev clinfo freeglut3*"
-PKGS12="libass-dev zlib1g-dev xserver-xorg-video-ati libelf-dev linux-headers-`uname -r`"
-PKGS11="libass-dev texinfo zlib1g-dev libva-dev libdrm-dev libvorbis-dev libogg-dev"
+PKGS13="llvm llvm-dev libelf-dev ccache flex bison g++ autoconf xutils-dev libz-dev clinfo libgnutls28-dev meson ninja-build freeglut3*"
+PKGS12="xserver-xorg-video-ati libelf-dev linux-headers-`uname -r`"
+PKGS11="texinfo libva-dev libdrm-dev libvorbis-dev libogg-dev"
 PKGS10="zlib1g-dev liblilv-dev yasm libass-dev libogg-dev libopencore-amrnb-dev libopencore-amrwb-dev pkg-config libgcc1 libopus-dev lib32gcc1 libx32gcc1 libmp3lame-dev gcc-multilib g++-multilib gcc-7 g++-7 gcc-8 g++-8 g++-9 g++"
 PKGS9="libva-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev"
 PKGS8="libchromaprint-dev frei0r-plugins-dev gnutls-dev ladspa-sdk libcaca-dev libcdio-paranoia-dev libcodec2-dev libfontconfig1-dev libfreetype6-dev"
@@ -96,7 +96,7 @@ PKGS5="libtesseract-dev libtheora-dev libtwolame-dev libv4l-dev libvo-amrwbenc-d
 PKGS4="libxml2-dev libzmq3-dev libzvbi-dev libopenal-dev opencl-dev libjack-dev libx11-dev libperl-dev"
 PKGS3="libpciaccess-dev libpciaccess0 xorg-dev intel-gpu-tools opencl-headers libwayland-dev xutils-dev ocl-icd-* libssl-dev libbz2-1.0 libbz2-dev"
 PKGS2="apt-clone libbz2-ocaml-dev python-dev libbz2-dev libbz2-1.0 libbz2-dev"
-PKGS1="unzip build-essential autoconf automake libtool git checkinstall shtool patch make bzip2 mercurial tclsh git-all xz-utils libnuma-dev cmake cmake-curses-gui"
+PKGS1="unzip build-essential autoconf automake libtool git git-core checkinstall shtool patch make bzip2 mercurial tclsh git-all xz-utils libnuma-dev cmake cmake-curses-gui"
 
 installPreAptLibs() {
 	echo "####  APT - LIBS  ################################################"
@@ -253,6 +253,31 @@ compileLibX265() {
 	PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$CMP_PREFIX" -DENABLE_SHARED:bool=off ../../source
 	PATH="$HOME/bin:$PATH" make -j$(nproc) VERBOSE=1
 	make -j$(nproc) install VERBOSE=1
+}
+
+compileLibsvtav1() {
+	echo "#### libsvtav1  ################################################"
+	echo "Compiling --enable-libsvtav1"
+    cd "$WORK_DIR/"
+    Clone https://github.com/AOMediaCodec/SVT-AV1.git
+	mkdir build
+	cd "build"
+	PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$CMP_PREFIX" -DCMAKE_BUILD_TYPE=Release -DBUILD_DEC=OFF -DBUILD_SHARED_LIBS=OFF ..
+	PATH="$HOME/bin:$PATH" make -j$(nproc) VERBOSE=1
+	make -j$(nproc) install VERBOSE=1
+}
+
+compilelibdav1d() {
+	echo "#### libsvtav1  ################################################"
+	echo "Compiling --enable-libdav1d"
+    cd "$WORK_DIR/"
+	sudo apt-get install python3-pip && pip3 install --user meson
+    Clone https://code.videolan.org/videolan/dav1d.git
+	mkdir build
+	cd "build"
+	meson setup -Denable_tools=false -Denable_tests=false --default-library=static .. --prefix "$CMP_PREFIX" --bindir="$HOMEBIN_DIR" --libdir="$CMP_PREFIX/lib"
+	ninja
+	ninja install
 }
 
 compileLibfdkaac() {
@@ -523,6 +548,9 @@ compileFFmpeg_CPU(){
 	  --extra-cflags="-I$HOME/ffmpeg_build/include" \
 	  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
+	  --enable-gnutls \
+	  --enable-libsvtav1 \
+	  --enable-libdav1d \
 	  --enable-vaapi \
 	  --enable-opencl \
 	  --disable-debug \
@@ -614,6 +642,9 @@ compileFFmpeg_Qsync(){
       --extra-ldflags="-L/opt/intel/mediasdk/plugins" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
 	  --enable-libmfx \
+	  --enable-gnutls \
+	  --enable-libsvtav1 \
+	  --enable-libdav1d \
 	  --enable-vaapi \
 	  --enable-opencl \
 	  --disable-debug \
@@ -697,6 +728,8 @@ compileYasm
 ##compilePkgConfig
 compileLibX264
 compileLibX265
+compileLibsvtav1
+compilelibdav1d
 compileLibfdkaac
 compileLibVpx
 compileLibVorbis
