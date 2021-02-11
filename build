@@ -743,7 +743,7 @@ compileLibXvid
 compileLibMp3Lame
 compileLibOpenCore
 compileLibOpus
-compileLibTwoLame
+##compileLibTwoLame
 compileLibVoAmrwbenc
 compileWebp
 compileLibOGG
