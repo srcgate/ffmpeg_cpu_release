@@ -480,7 +480,7 @@ compileFfmpeg(){
 
 
 compileFFmpeg_CPU(){
-	echo "####  FFMPEG3  ################################################"
+	echo "####  FFMPEG_CPU  ################################################"
     echo "Compiling ffmpeg"
 	cd "$WORK_DIR/"
     rm -rf "FFmpeg/"
@@ -494,10 +494,8 @@ compileFFmpeg_CPU(){
 	  --bindir="$HOME/bin" \
 	  --extra-cflags="-I$HOME/ffmpeg_build/include" \
 	  --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
-	  --extra-cflags="-I/opt/intel/mediasdk/include" \
-      --extra-ldflags="-L/opt/intel/mediasdk/lib" \
-      --extra-ldflags="-L/opt/intel/mediasdk/plugins" \
 	  --extra-libs="-lpthread -lm -lz -ldl" \
+	  --enable-vaapi \	 
 	  --enable-opencl \
 	  --disable-debug \
 	  --enable-libvorbis \
@@ -510,7 +508,6 @@ compileFFmpeg_CPU(){
 	  --enable-libx265 \
 	  --enable-openssl \
 	  --enable-pic \
-	  --extra-libs="-lpthread -lm -lz -ldl" \
 	  --enable-nonfree \
 	  --enable-libass \
 	  --extra-libs=-lpthread \
@@ -559,6 +556,8 @@ compileFFmpeg_CPU(){
 	  --enable-muxer=rtsp \
 	  --enable-protocol=rtp \
 	  --enable-demuxer=rtsp \
+	  --enable-demuxer=dash \
+      --enable-libxml2 \
 	  --enable-bzlib \
 	  --enable-frei0r \
 	  --enable-libmp3lame \
@@ -604,7 +603,6 @@ compileFFmpeg_Qsync(){
 	  --enable-libx265 \
 	  --enable-openssl \
 	  --enable-pic \
-	  --extra-libs="-lpthread -lm -lz -ldl" \
 	  --enable-nonfree \
 	  --enable-libass \
 	  --extra-libs=-lpthread \
@@ -653,6 +651,8 @@ compileFFmpeg_Qsync(){
 	  --enable-muxer=rtsp \
 	  --enable-protocol=rtp \
 	  --enable-demuxer=rtsp \
+	  --enable-demuxer=dash \
+      --enable-libxml2 \
 	  --enable-bzlib \
 	  --enable-frei0r \
 	  --enable-libmp3lame \
@@ -696,3 +696,5 @@ compileFFmpeg5
 #echo "apt-get install -y libjack-dev libopenal-dev libvdpau-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev libcdio-paranoia-dev libcaca-dev libxv1 liblilv-dev librubberband-dev libass-dev libva-dev libgme-dev libmodplug-dev libopenmpt-dev  libchromaprint-dev libssh-dev libopencore-amrnb-dev libopencore-amrwb-dev libcodec2-dev libvo-amrwbenc-dev"
 #echo "sudo apt install ocl-icd-opencl-dev"
 ## END ##
+
+
